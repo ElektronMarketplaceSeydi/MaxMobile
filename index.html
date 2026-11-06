@@ -1,0 +1,443 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elektron Seydi Marketplace</title>
+<style>
+:root{--black:#050505;--dark:#100d08;--gold:#f4c65e;--gold2:#ffdf91;--gold3:#a87520;--white:#fff7df}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#050505;color:var(--white);font-family:Arial,Helvetica,sans-serif}
+button,input{font:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(ellipse at 10% 20%,#7b4b0c30,transparent 35%),radial-gradient(ellipse at 90% 70%,#9b6b1830,transparent 35%)}
+.gold-text{color:var(--gold);text-shadow:0 0 12px #f4c65e55}
+.gold-border{border:1px solid #d9a83f;box-shadow:0 0 8px #d9a83f30,inset 0 0 8px #d9a83f12}
+button,.gold-button{border:1px solid #f1c75c;color:#090704;background:linear-gradient(135deg,#fff0a9,#d6a33d 55%,#fff0a9);border-radius:30px;font-weight:bold;padding:11px 18px}
+
+/* ШАПКА */
+header{background:#050505ed;border-bottom:1px solid #a77b2c;position:sticky;top:0;z-index:20;padding:10px 2%}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:12px;color:var(--gold);font-family:Georgia,serif;font-weight:bold;font-size:clamp(17px,2.5vw,27px);line-height:1.05}
+.crown{font-size:42px}
+.header-actions{display:flex;align-items:center;gap:10px}
+.lang{background:#100d08;color:white;border:1px solid #74551e;border-radius:30px;padding:9px 12px}
+.phone{white-space:nowrap;font-size:17px}
+.imo{background:#064cb8;color:white;border:2px solid #7fbaff;border-radius:50%;width:42px;height:42px;font-weight:bold;display:inline-flex;align-items:center;justify-content:center}
+.cart-button{position:relative;color:var(--gold);background:transparent;border:0;font-size:30px;padding:4px}
+.count{position:absolute;top:0;right:-3px;background:#ed1717;color:white;border-radius:50%;font-size:12px;min-width:19px;height:19px;display:grid;place-items:center}
+.searchbar{display:flex;gap:10px;margin-top:10px}
+.catalog-toggle{white-space:nowrap;background:#080704;color:var(--gold);border:1px solid var(--gold3)}
+.searchbar input{flex:1;min-width:0;padding:13px 18px;color:white;background:#050505;border:1px solid #b88a32;border-radius:30px;outline:none}
+.searchbar input:focus{box-shadow:0 0 12px #f4c65e55}
+
+/* БАННЕР */
+.hero{width:100%;min-height:330px;border-bottom:2px solid #d8a83c;background:url("images/banner.png") center/cover no-repeat;position:relative}
+
+/* КАТАЛОГ */
+.section{padding:18px 2%}
+.section-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:5px 0 16px}
+.section-heading h2{color:var(--gold);font-family:Georgia,serif;margin:0;font-size:clamp(22px,3vw,32px)}
+.category-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+.category-card{overflow:hidden;border-radius:15px;background:#080704;border:1px solid #d5a33d;box-shadow:0 0 9px #d7a64025;transition:transform .2s,box-shadow .2s;cursor:pointer}
+.category-card:hover{transform:translateY(-3px);box-shadow:0 0 18px #e6b84f66}
+.category-card img{width:100%;height:115px;object-fit:cover;display:block;background:#15110a}
+.category-name{min-height:43px;display:flex;justify-content:center;align-items:center;text-align:center;padding:7px 4px;font-weight:bold;color:#ffe5a0;font-size:14px;background:linear-gradient(#080704,#000)}
+
+/* ТОВАРЫ */
+.products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.product{border:1px solid #9e7629;border-radius:14px;overflow:hidden;background:#0b0906}
+.product img{width:100%;height:170px;object-fit:cover;display:block;background:#15110a}
+.product-info{padding:12px}
+.product h3{margin:0 0 8px;color:#ffe2a0}
+.price{color:var(--gold);font-weight:bold;font-size:19px}
+.product button{width:100%;margin-top:10px}
+.hidden{display:none!important}
+
+/* ПРЕИМУЩЕСТВА */
+.benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:15px 2% 90px}
+.benefit{display:flex;align-items:center;gap:12px;padding:16px;border:1px solid #bd8e35;border-radius:13px;background:linear-gradient(110deg,#100c05,#030303)}
+.benefit-icon{font-size:35px;color:var(--gold)}
+.benefit strong{color:var(--gold);font-size:17px}
+.benefit p{margin:5px 0 0;font-size:13px}
+
+/* КОРЗИНА */
+.cart-panel{position:fixed;right:12px;bottom:75px;width:min(400px,94vw);max-height:75vh;overflow:auto;padding:18px;background:#090704;border:1px solid var(--gold);border-radius:16px;box-shadow:0 0 25px #000;z-index:40}
+.cart-panel h2{color:var(--gold);margin-top:0}
+.cart-row{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid #60491f}
+.cart-total{font-weight:bold;color:var(--gold);margin:15px 0}
+.close-cart{float:right;background:transparent;color:var(--gold);border:0;font-size:24px;padding:0}
+
+/* НИЖНЕЕ МЕНЮ */
+.bottom-nav{position:fixed;z-index:30;bottom:0;left:0;right:0;display:flex;justify-content:space-around;background:#030303f5;border-top:1px solid #9f762b;padding:8px 3px}
+.bottom-nav button{background:transparent;border:0;color:#f5d276;padding:4px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:12px}
+.bottom-nav .nav-icon{font-size:23px}
+.call-float{position:fixed;right:12px;bottom:75px;z-index:25;padding:13px 17px;box-shadow:0 0 15px #e2b44666}
+footer{text-align:center;padding:20px 10px 100px;color:#bda66e;border-top:1px solid #74551e}
+
+/* АДАПТАЦИЯ */
+@media(max-width:800px){
+.category-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.category-card img{height:105px}
+.products{grid-template-columns:repeat(2,minmax(0,1fr))}
+.hero{min-height:280px}
+.phone{font-size:14px}
+.benefit{padding:10px}
+}
+@media(max-width:520px){
+header{padding:8px 3%}
+.topbar{flex-wrap:wrap}
+.brand{font-size:18px}
+.crown{font-size:32px}
+.header-actions{gap:5px}
+.lang{padding:7px 8px;font-size:12px}
+.phone{font-size:12px;padding:9px}
+.imo{width:34px;height:34px;font-size:12px}
+.cart-button{font-size:25px}
+.searchbar{gap:5px}
+.catalog-toggle{padding:10px;font-size:12px}
+.searchbar input{padding:11px 12px;font-size:13px}
+.hero{min-height:245px}
+.category-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.category-card img{height:85px}
+.category-name{font-size:11px;min-height:42px}
+.section{padding:13px 2%}
+.products{gap:8px}
+.product img{height:130px}
+.product-info{padding:9px}
+.product h3{font-size:14px}
+.price{font-size:16px}
+.product button{font-size:12px;padding:9px 5px}
+.benefits{grid-template-columns:1fr;padding-bottom:90px}
+.benefit-icon{font-size:28px}
+.call-float{display:none}
+}
+</style>
+</head>
+<body>
+
+<header>
+<div class="topbar">
+<a class="brand" href="#"><span class="crown">♛</span><span>Elektron Seydi<br>Marketplace</span></a>
+<div class="header-actions">
+<button class="lang" onclick="setLanguage('ru')">🇷🇺 Русский</button>
+<button class="lang" onclick="setLanguage('tk')">🇹🇲 Türkmençe</button>
+<a class="gold-button phone" href="tel:+99371004761">☎ +99371004761</a>
+<a class="imo" href="https://imo.im/" target="_blank" title="imo">imo</a>
+<button class="cart-button" onclick="toggleCart()" aria-label="Корзина">🛒<span class="count" id="cartCount">0</span></button>
+</div>
+</div>
+<div class="searchbar">
+<button class="catalog-toggle" onclick="scrollToCatalog()">☰ Каталог товаров</button>
+<input id="searchInput" type="search" placeholder="Поиск товаров..." oninput="searchItems()">
+<button onclick="searchItems()">🔍</button>
+</div>
+</header>
+
+<section class="hero" aria-label="Elektron Seydi Marketplace"></section>
+
+<section class="section" id="catalog">
+<div class="section-heading"><h2 id="catalogTitle">✦ Каталог товаров ✦</h2></div>
+<div class="category-grid" id="categoryGrid"></div>
+</section>
+
+<section class="section" id="productsSection">
+<div class="section-heading">
+<h2 id="productsTitle">Популярные товары</h2>
+<button onclick="showAllProducts()" id="showAllButton">Все товары</button>
+</div>
+<div class="products" id="productsGrid"></div>
+</section>
+
+<section class="benefits">
+<div class="benefit"><div class="benefit-icon">🚚</div><div><strong id="deliveryTitle">Быстрая доставка</strong><p id="deliveryText">По всему Туркменистану</p></div></div>
+<div class="benefit"><div class="benefit-icon">🛡️</div><div><strong id="qualityTitle">Гарантия качества</strong><p id="qualityText">На все товары</p></div></div>
+<div class="benefit"><div class="benefit-icon">🎧</div><div><strong id="supportTitle">Поддержка 24/7</strong><p><a href="tel:+99371004761">+99371004761</a></p></div></div>
+</section>
+
+<footer><div class="gold-text">♛ Elektron Seydi Marketplace ♛</div><p>© 2026 • Технологии. Комфорт. Стиль.</p></footer>
+
+<div class="cart-panel hidden" id="cartPanel">
+<button class="close-cart" onclick="toggleCart()">×</button>
+<h2 id="cartTitle">🛒 Ваша корзина</h2>
+<div id="cartItems"></div>
+<div class="cart-total" id="cartTotal">Итого: 0 TMT</div>
+<a class="gold-button" href="tel:+99371004761" id="orderButton">☎ Заказать по телефону</a>
+</div>
+
+<a class="gold-button call-float" href="tel:+99371004761">☎ Позвонить</a>
+
+<nav class="bottom-nav">
+<button onclick="window.scrollTo({top:0,behavior:'smooth'})"><span class="nav-icon">⌂</span><span id="navHome">Главная</span></button>
+<button onclick="scrollToCatalog()"><span class="nav-icon">▦</span><span id="navCatalog">Каталог</span></button>
+<button onclick="showFavorites()"><span class="nav-icon">♡</span><span id="navFavorites">Избранное</span></button>
+<button onclick="toggleCart()"><span class="nav-icon">🛒</span><span id="navCart">Корзина</span></button>
+<button onclick="alert(currentLang==='ru'?'Позвоните нам: +99371004761':'Biziň bilen habarlaşyň: +99371004761')"><span class="nav-icon">♙</span><span id="navProfile">Профиль</span></button>
+</nav>
+
+<script>
+const categories = [
+["Мобильные телефоны","Jübi telefonlary","📱"],
+["Зарядные устройства","Zarýad berijiler","🔌"],
+["Наушники","Gulaklyklar","🎧"],
+["Смарт часы","Akylly sagatlar","⌚"],
+["Флешки","USB fleşkalar","💾"],
+["Зарядные устройства и MP3 для машин","Awtoulag üçin zarýad berijiler we MP3 pleýerler","🚗"],
+["Подставки для телефонов","Telefon üçin diregler","📱"],
+["Селфи держатели","Selfi taýaklary","🤳"],
+["Чехлы для телефонов","Telefon gaplary","📱"],
+["Видеорегистраторы","Awtoulag wideoregistratorlary","📹"],
+["Колонки","Ses kolonkalar","🔊"],
+["Освежители для машин","Awtoulag üçin howa yslandyryjylar","🌸"],
+["Модемы","Modemler","📡"],
+["Духи","Atarlar","🧴"],
+["Косметика","Kosmetika","💄"],
+["Часы","Sagatlar","⌚"],
+["Кондиционеры","Kondisionerler","❄️"],
+["Телевизоры","Telewizorlar","📺"],
+["Пылесосы","Tozan sorujylar","🧹"],
+["Газовые плиты","Gaz plitalary","🔥"],
+["Мясорубки","Et üweýji maşynlar","🍖"],
+["Миксеры","Mikserler","🥣"],
+["Блендеры","Blenderler","🥤"],
+["Микроволновые духовки","Mikrotolkunly peçler","♨️"],
+["Духовки","Elektrik peçleri","♨️"],
+["Обогреватели","Ýyladyjylar","🔥"],
+["Мышка","Kompýuter syçanjyklary","🖱️"],
+["Клавиатура","Klawiaturalar","⌨️"],
+["Джойстики","Oýun dolandyryjylary","🎮"],
+["Вентиляторы","Wentilýatorlar","🌀"],
+["Стабилизаторы для электричества","Elektrik naprýaženiýesini sazlaýjylar","⚡"],
+["Бойлеры","Suw gyzdyryjylar","🚿"],
+["Утюги","Ütükler","♨️"],
+["Фен для волос","Saç guradyjy fenler","💨"]
+];
+
+function categoryImage(i){return `images/project${i+1}.png`;}
+
+const products = [
+{name:"Смартфон",category:0,price:3500,img:"project1"},
+{name:"D02E",category:1,price:50,img:"D02E"},
+{name:"D05E",category:1,price:50,img:"D05E"},
+{name:"D82V",category:1,price:30,img:"D82V"},
+{name:"D01T",category:1,price:30,img:"D01T"},
+{name:"D87C",category:1,price:35,img:"D87C"},
+{name:"D86C",category:1,price:30,img:"D86C"},
+{name:"D82T",category:1,price:30,img:"D82T"},
+{name:"DC26",category:1,price:50,img:"DC26"},
+{name:"25w-PD",category:1,price:50,img:"25w-PD"},
+{name:"DC41T",category:1,price:50,img:"DC41T"},
+{name:"DC06T",category:1,price:80,img:"DC06T"},
+{name:"MI120W",category:1,price:150,img:"MI120W"},
+{name:"MI67W",category:1,price:120,img:"MI67W"},
+{name:"MI120WGAN",category:1,price:150,img:"MI120WGAN"},
+{name:"65W-PD",category:1,price:100,img:"65W-PD"},
+{name:"DC01T",category:1,price:50,img:"DC01T"},
+{name:"GD-42",category:1,price:30,img:"GD-42"},
+{name:"Беспроводные наушники",category:2,price:450,img:"project3"},
+{name:"Смарт часы",category:3,price:650,img:"project4"},
+{name:"USB флешка",category:4,price:100,img:"project5"},
+{name:"Автомобильный аксессуар",category:5,price:200,img:"project6"},
+{name:"Колонка Bluetooth",category:10,price:550,img:"project7"},
+{name:"Парфюм",category:13,price:300,img:"project8"},
+{name:"Twsi12",category:2,price:30,img:"Twsi12"},
+{name:"Twsi13",category:2,price:30,img:"Twsi13"},
+{name:"Twsi14",category:2,price:30,img:"Twsi14"},
+{name:"Twsi15pods",category:2,price:30,img:"Twsi15pods"},
+{name:"Twsi16",category:2,price:30,img:"Twsi16"},
+{name:"Twsi18",category:2,price:30,img:"Twsi18"},
+{name:"Twsi11",category:2,price:30,img:"Twsi11"},
+{name:"Inpods12",category:2,price:30,img:"Inpods12"},
+{name:"ByDre",category:2,price:150,img:"ByDre"},
+{name:"Dw-0s08",category:2,price:100,img:"Dw-0s08"},
+{name:"X6",category:2,price:350,img:"X6"},
+{name:"EnetHS-808",category:2,price:150,img:"EnetHS-808"},
+{name:"Axtrom",category:2,price:150,img:"Axtrom"},
+{name:"GE-07",category:2,price:30,img:"GE-07"},
+{name:"E3",category:2,price:30,img:"E3"},
+{name:"Marshall-i12",category:2,price:100,img:"Marshall-i12"},
+{name:"P9Pro-Max",category:2,price:100,img:"P9Pro-Max"},
+{name:"P9Pro-Max1",category:2,price:100,img:"P9Pro-Max1"},
+{name:"C3T",category:5,price:50,img:"C3T"},
+{name:"EveronED-28",category:5,price:50,img:"EveronED-28"},
+{name:"AllisonMp3",category:5,price:50,img:"AllisonMp3"},
+{name:"CarFmMp3",category:5,price:50,img:"CarFmMp3"},
+{name:"ALS-A24",category:5,price:50,img:"ALS-A24"},
+{name:"CarFastCharger",category:5,price:50,img:"CarFastCharger"},
+{name:"SainyouLD-12",category:6,price:40,img:"SainyouLD-12"},
+{name:"NO.s355",category:6,price:40,img:"NO.s355"},
+{name:"32GBmicro",category:4,price:110,img:"32GBmicro"},
+{name:"64GBmicro",category:4,price:125,img:"64GBmicro"},
+{name:"8GBmicro",category:4,price:75,img:"8GBmicro"},
+{name:"8GBusb",category:4,price:75,img:"8GBusb"},
+{name:"4GBmicro",category:4,price:60,img:"4GBmicro"},
+{name:"4GBusb",category:4,price:60,img:"4GBusb"},
+{name:"2GBmicro",category:4,price:40,img:"2GBmicro"},
+{name:"16GBusb",category:4,price:90,img:"16GBusb"},
+{name:"S1000pro",category:3,price:200,img:"S1000pro"},
+{name:"I-10mini",category:3,price:150,img:"I-10mini"},
+{name:"Zqs8230w",category:10,price:500,img:"Zqs8230w"},
+{name:"Zqs8281",category:10,price:800,img:"Zqs8281"},
+{name:"Yunuo",category:10,price:300,img:"Yunuo"},
+{name:"BelineVodofone",category:12,price:80,img:"BelineVodofone"},
+{name:"M100-3",category:12,price:80,img:"M100-3"},
+{name:"Hsupa",category:12,price:80,img:"Hsupa"},
+{name:"SingleShock",category:28,price:150,img:"SingleShock"},
+{name:"DoubleShock2",category:28,price:150,img:"DoubleShock2"},
+{name:"UcomWireless",category:28,price:150,img:"UcomWireless"},
+{name:"BlackOdorBO-17",category:11,price:30,img:"BlackOdorBO-17"},
+{name:"BlackOdorBO-13",category:11,price:150,img:"BlackOdorBO-13"},
+{name:"BlackOdorBO-2",category:11,price:60,img:"BlackOdorBO-2"},
+{name:"BlackOdorBO-42",category:11,price:100,img:"BlackOdorBO-42"},
+{name:"BlackOdorBO-39",category:11,price:120,img:"BlackOdorBO-39"},
+{name:"BlackOdorBO-21",category:11,price:100,img:"BlackOdorBO-21"},
+{name:"BlackOdorBO-46",category:11,price:100,img:"BlackOdorBO-46"},
+{name:"F15",category:7,price:150,img:"F15"},
+{name:"R13-I",category:7,price:150,img:"R13-I"},
+{name:"Carcamcorder",category:9,price:150,img:"Carcamcorder"},
+{name:"Dvr1080",category:9,price:150,img:"Dvr1080"},
+{name:"WirelessMouse1",category:26,price:120,img:"WirelessMouse1"},
+{name:"WirelessMouse2",category:26,price:120,img:"WirelessMouse2"},
+{name:"WirelessMouse3",category:26,price:150,img:"WirelessMouse3"},
+{name:"Manhatton",category:27,price:100,img:"Manhatton"},
+{name:"ZE-940",category:27,price:100,img:"ZE-940"}
+];
+
+function productImage(p){return `images/${p.img}.png`;}
+
+let currentLang="ru";
+let cart=[];
+let favorites=[];
+let activeCategory=null;
+
+const translations={
+ru:{
+catalog:"✦ Каталог товаров ✦",products:"Популярные товары",all:"Все товары",
+add:"В корзину",added:"Добавлено",cart:"🛒 Ваша корзина",total:"Итого: ",
+order:"☎ Заказать по телефону",empty:"Корзина пока пуста",
+delivery:"Быстрая доставка",deliveryText:"По всему Туркменистану",
+quality:"Гарантия качества",qualityText:"На все товары",support:"Поддержка 24/7",
+home:"Главная",navCatalog:"Каталог",favorites:"Избранное",
+navCart:"Корзина",profile:"Профиль",search:"Поиск товаров..."
+},
+tk:{
+catalog:"✦ Harytlar katalogy ✦",products:"Meşhur harytlar",all:"Ähli harytlar",
+add:"Sebede goş",added:"Goşuldy",cart:"🛒 Sebediňiz",total:"Jemi: ",
+order:"☎ Telefon arkaly sargyt",empty:"Sebet häzir boş",
+delivery:"Çalt eltip bermek",deliveryText:"Türkmenistanyň ähli ýerlerine",
+quality:"Hil kepilligi",qualityText:"Ähli harytlara",support:"24/7 goldaw",
+home:"Baş sahypa",navCatalog:"Katalog",favorites:"Halanlarym",
+navCart:"Sebet",profile:"Profil",search:"Haryt gözle..."
+}
+};
+
+function renderCategories(){
+const grid=document.getElementById("categoryGrid");
+grid.innerHTML="";
+categories.forEach((c,i)=>{
+const card=document.createElement("div");
+card.className="category-card";
+card.onclick=()=>showCategory(i);
+card.innerHTML=`
+<img src="${categoryImage(i)}" alt="${c[0]}" loading="lazy"
+onerror="this.style.display='none';this.parentElement.insertAdjacentHTML('afterbegin','<div style=&quot;height:115px;display:grid;place-items:center;font-size:48px&quot;>${c[2]}</div>')">
+<div class="category-name">${currentLang==="ru"?c[0]:c[1]}</div>`;
+grid.appendChild(card);
+});
+}
+
+function renderProducts(list=products){
+const grid=document.getElementById("productsGrid");
+grid.innerHTML="";
+list.forEach((p)=>{
+const card=document.createElement("div");
+card.className="product";
+card.innerHTML=`
+<img src="${productImage(p)}" alt="${p.name}" loading="lazy"
+onerror="this.style.background='#15110a'">
+<div class="product-info">
+<h3>${p.name}</h3>
+<div class="price">${p.price} TMT</div>
+<button onclick="addToCart(${products.indexOf(p)})">${translations[currentLang].add}</button>
+</div>`;
+grid.appendChild(card);
+});
+}
+
+function addToCart(index){
+cart.push(products[index]);
+updateCart();
+}
+function updateCart(){
+document.getElementById("cartCount").textContent=cart.length;
+const area=document.getElementById("cartItems");
+area.innerHTML="";
+if(!cart.length){
+area.textContent=translations[currentLang].empty;
+}else{
+cart.forEach((p,i)=>{
+const row=document.createElement("div");
+row.className="cart-row";
+row.innerHTML=`<span>${p.name}</span><span>${p.price} TMT <button onclick="removeFromCart(${i})" style="padding:3px 8px">×</button></span>`;
+area.appendChild(row);
+});
+}
+const sum=cart.reduce((total,p)=>total+p.price,0);
+document.getElementById("cartTotal").textContent=translations[currentLang].total+sum+" TMT";
+}
+function removeFromCart(i){cart.splice(i,1);updateCart();}
+function toggleCart(){document.getElementById("cartPanel").classList.toggle("hidden");}
+function scrollToCatalog(){document.getElementById("catalog").scrollIntoView({behavior:"smooth"});}
+function showCategory(index){
+activeCategory=index;
+const list=products.filter(p=>p.category===index);
+document.getElementById("productsTitle").textContent=currentLang==="ru"?categories[index][0]:categories[index][1];
+renderProducts(list.length?list:products);
+document.getElementById("productsSection").scrollIntoView({behavior:"smooth"});
+}
+function showAllProducts(){
+activeCategory=null;
+document.getElementById("productsTitle").textContent=translations[currentLang].products;
+renderProducts(products);
+}
+function searchItems(){
+const value=document.getElementById("searchInput").value.toLowerCase();
+const filtered=products.filter(p=>p.name.toLowerCase().includes(value));
+renderProducts(filtered);
+}
+function showFavorites(){
+alert(currentLang==="ru"?"Раздел избранного скоро появится.":"Halanlarym bölümi ýakynda açylar.");
+}
+function setLanguage(lang){
+currentLang=lang;
+const t=translations[lang];
+document.getElementById("catalogTitle").textContent=t.catalog;
+document.getElementById("productsTitle").textContent=t.products;
+document.getElementById("showAllButton").textContent=t.all;
+document.getElementById("deliveryTitle").textContent=t.delivery;
+document.getElementById("deliveryText").textContent=t.deliveryText;
+document.getElementById("qualityTitle").textContent=t.quality;
+document.getElementById("qualityText").textContent=t.qualityText;
+document.getElementById("supportTitle").textContent=t.support;
+document.getElementById("navHome").textContent=t.home;
+document.getElementById("navCatalog").textContent=t.navCatalog;
+document.getElementById("navFavorites").textContent=t.favorites;
+document.getElementById("navCart").textContent=t.navCart;
+document.getElementById("navProfile").textContent=t.profile;
+document.getElementById("cartTitle").textContent=t.cart;
+document.getElementById("orderButton").textContent=t.order;
+document.getElementById("searchInput").placeholder=t.search;
+renderCategories();
+renderProducts(products);
+updateCart();
+}
+
+renderCategories();
+renderProducts(products);
+updateCart();
+</script>
+</body>
+</html>
